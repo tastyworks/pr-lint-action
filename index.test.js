@@ -87,9 +87,19 @@ describe('pr-lint-action', () => {
     { commit: { message: 'PROJ-1234 Commit 2' } },
     { commit: { message: 'abc-1234 Commit 3' } },
   ];
-  const bad_commits = [
-    { commit: { message: 'PRJ-123 Commit 1' } },
+  const good_frst_commit = [
+    { commit: { message: 'PROJ-123 Commit 1' } },
+    { commit: { message: 'Commit 2' } },
+    { commit: { message: 'Commit 3' } },
+  ];
+  const bad_commits_not_first = [
+    { commit: { message: 'Commit 1' } },
     { commit: { message: 'PROJ-1234 Commit 2' } },
+    { commit: { message: 'Commit 3' } },
+  ];
+  const bad_commits_none = [
+    { commit: { message: 'PRJ-123 Commit 1' } },
+    { commit: { message: 'PROJ 1234 Commit 2' } },
     { commit: { message: 'Commit 3' } },
   ];
 
@@ -216,13 +226,41 @@ describe('pr-lint-action', () => {
     expect.assertions(1);
   });
 
+  it('passes if check_commits is true and first commit matches', async () => {
+    nock('https://api.github.com')
+      .get(/\/repos\/vijaykramesh\/.*/)
+      .query(true)
+      .reply(200, configFixture('commits.yml'));
+
+    mockGetPRCommitListRequest(good_frst_commit);
+
+    tools.context.payload = pullRequestOpenedFixture(good_title_and_branch);
+    await action(tools);
+    expect(tools.exit.success).toHaveBeenCalled();
+    expect.assertions(1);
+  });
+
+  it('fails if check_commits is true and first commit does not match', async () => {
+    nock('https://api.github.com')
+      .get(/\/repos\/vijaykramesh\/.*/)
+      .query(true)
+      .reply(200, configFixture('commits.yml'));
+
+    mockGetPRCommitListRequest(bad_commits_not_first);
+
+    tools.context.payload = pullRequestOpenedFixture(good_title_and_branch);
+    await action(tools);
+    expect(tools.exit.failure).toHaveBeenCalledWith('PR Linting Failed');
+    expect.assertions(1);
+  });
+
   it('fails if check_commits is true and some commits do not match', async () => {
     nock('https://api.github.com')
       .get(/\/repos\/vijaykramesh\/.*/)
       .query(true)
       .reply(200, configFixture('commits.yml'));
 
-    mockGetPRCommitListRequest(bad_commits);
+    mockGetPRCommitListRequest(bad_commits_none);
 
     tools.context.payload = pullRequestOpenedFixture(good_title_and_branch);
     await action(tools);
@@ -250,7 +288,7 @@ describe('pr-lint-action', () => {
       .query(true)
       .reply(200, configFixture('title.yml'));
 
-    mockGetPRCommitListRequest(bad_commits);
+    mockGetPRCommitListRequest(bad_commits_none);
 
     tools.context.payload = pullRequestOpenedFixture(good_title_and_branch);
     await action(tools);

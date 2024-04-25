@@ -4,9 +4,10 @@ A GitHub Action that verifies your pull request contains a reference to a ticket
 
 * The PR title contains `[PROJ-1234]`
 * The branch name contains `PROJ-1234` or `PROJ_1234`
-* Each commit contains `[PROJ-1234]`
+* First commit contains `[PROJ-1234]`
 
-
+Forked changes:
+* Instead of all commits requiring ticket reference, only the first commit is checked
 
 ## Usage
 

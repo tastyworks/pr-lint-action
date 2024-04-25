@@ -20,13 +20,9 @@ function createProjectRegex(project, ignoreCase = false) {
   return new RegExp(`${project}[-_]\\d*`);
 }
 function findFailedCommits(projects, commitsInPR, ignoreCase) {
-  const failedCommits = [];
-  commitsInPR.forEach((commit) => {
-    if (!projects.some((project) => commit.commit.message.match(createProjectRegex(project, ignoreCase)))) {
-      failedCommits.push(commit.commit.message);
-    }
-  });
-  return failedCommits;
+  const firstCommit = commitsInPR[0].commit.message;
+  const matchFirst = projects.some((project) => firstCommit.match(createProjectRegex(project, ignoreCase)));
+  return matchFirst ? [] : [firstCommit];
 }
 
 function createWrappedProjectRegex(project, requireBrackets = false) {
@@ -94,9 +90,7 @@ Toolkit.run(
         const failedCommits = findFailedCommits(projects, commitsInPR, config.ignore_case);
 
         if (failedCommits.length) {
-          failedCommits.forEach(
-            (failedCommit) => tools.log(`Commit message '${failedCommit}' does not contain an approved project`),
-          );
+          tools.log(`First commit message '${failedCommits[0]}' does not contain an approved project`);
           return false;
         }
       }
