@@ -1,8 +1,32 @@
-name: pr-lint-action
-description: A GitHub Action that verifies your pull request contains a reference to a ticket.
+name: tasty-pr-lint-action
+description:
+  A GitHub Action that verifies your pull request contains a reference to a
+  ticket.
+inputs:
+  projects:
+    description: Multi-line of acceptable project prefixes
+    required: true
+  check-title:
+    description: Make sure PR title contains a ticket reference
+    required: true
+  check-branch:
+    description: Make sure branch name contains a ticket reference
+    required: true
+  check-commits:
+    description: Make sure first commit message contains a ticket reference
+    required: true
+  ignore-case:
+    description: Case-senstive ticket reference matching
+    required: true
+  require-brackets:
+    description: if bracket characters should wrap ticket reference
+    required: true
+  github-token:
+    description: GitHub Secret Token
+    required: true
 runs:
-  using: docker
-  image: Dockerfile
+  using: node20
+  main: dist/index.js
 branding:
   icon: activity
   color: white
