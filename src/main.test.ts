@@ -1,9 +1,5 @@
-import {
-  FetchCommits,
-  type InputConfig,
-  PullRequestDetails,
-  run
-} from './main.js'
+// @ts-ignore
+import { FetchCommits, type InputConfig, PullRequestDetails, run } from './main'
 
 interface FixutureParam {
   title: string
