@@ -57,7 +57,13 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          projects: |
+            VAST
+          check-title: true
+          check-branch: true
+          check-commits: true
+          ignore-case: false
+          require-brackets: false
 
       - name: Print Output
         id: output
