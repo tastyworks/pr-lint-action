@@ -116,16 +116,10 @@ describe('pr-lint-action', () => {
     'Commit 3'
   ]
 
-  const noCommitsCallback = async (
-    owner: string,
-    repo: string,
-    pull_number: number
-  ): Promise<string[]> => {
-    return []
-  }
+  const noCommitsCallback: FetchCommits = async () => []
 
   function mockGetPRCommitListRequest(commits: string[]): FetchCommits {
-    return () => Promise.resolve(commits)
+    return async () => commits
   }
 
   it('fails if check_title is true and title does not match', async () => {
@@ -269,19 +263,6 @@ describe('pr-lint-action', () => {
       mockGetPRCommitListRequest(bad_commits_none)
     )
     expect(errors).toHaveLength(0)
-  })
-
-  it('fails if check_branch and check_title is true and title does not match', async () => {
-    const config = fixtureAll
-
-    const details = pullRequestOpenedFixture(bad_title_and_good_branch)
-    const errors = await run(
-      config,
-      details,
-      mockGetPRCommitListRequest(good_commits)
-    )
-    expect(errors).toHaveLength(1)
-    expect(errors[0]).toContain('PR title')
   })
 
   it('fails if check_branch and check_title is true and title does not match', async () => {

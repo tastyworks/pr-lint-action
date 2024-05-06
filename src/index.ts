@@ -48,12 +48,16 @@ const details = {
 }
 
 run(inputConfig, details, octokitFetchCommits)
+  // eslint-disable-next-line github/no-then
   .then(errors => {
     if (errors.length > 0) {
-      errors.forEach(msg => core.error(msg))
+      for (const msg of errors) {
+        core.error(msg)
+      }
       core.setFailed('PR Linting Failed')
     }
   })
+  // eslint-disable-next-line github/no-then
   .catch(exception => {
     core.setFailed(exception)
   })
