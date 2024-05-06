@@ -18,7 +18,7 @@ inputs:
   ignore-case:
     description: Case-senstive ticket reference matching
     required: true
-  require-branckets:
+  require-brackets:
     description: if bracket characters should wrap ticket reference
     required: true
   github-token:
