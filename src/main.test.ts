@@ -1,4 +1,3 @@
-// @ts-ignore
 import { FetchCommits, type InputConfig, PullRequestDetails, run } from './main'
 
 interface FixutureParam {
