@@ -15,15 +15,20 @@ export interface PullRequestDetails {
   number: number
 }
 
-export interface FetchCommits {
-  (owner: string, repo: string, pull_number: number): Promise<string[]>
-}
+export type FetchCommits = (
+  owner: string,
+  repo: string,
+  pull_number: number
+) => Promise<string[]>
 
-function createProjectRegex(project: string, ignoreCase = false) {
+function createProjectRegex(project: string, ignoreCase = false): RegExp {
   return new RegExp(`${project}[-_]\\d*`, ignoreCase ? 'i' : undefined)
 }
 
-function createWrappedProjectRegex(project: string, requireBrackets = false) {
+function createWrappedProjectRegex(
+  project: string,
+  requireBrackets = false
+): RegExp {
   if (requireBrackets) {
     return new RegExp(`\\[${project}-\\d*\\]`)
   }
