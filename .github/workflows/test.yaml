@@ -58,14 +58,10 @@ jobs:
         uses: ./
         with:
           projects: |
-            VAST
+            VST
           check-title: true
           check-branch: true
           check-commits: true
           ignore-case: false
           require-brackets: false
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}

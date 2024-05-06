@@ -1,4 +1,9 @@
-import { FetchCommits, type InputConfig, PullRequestDetails, run } from './main'
+import {
+  FetchCommits,
+  type InputConfig,
+  PullRequestDetails,
+  run
+} from './main.js'
 
 interface FixutureParam {
   title: string

@@ -1,4 +1,4 @@
-import { run } from './main'
+import { run } from './main.js'
 import * as core from '@actions/core'
 import { context, getOctokit } from '@actions/github'
 
