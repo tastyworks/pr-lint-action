@@ -43,7 +43,7 @@ async function check(): Promise<void> {
     const { pull_request } = context.payload
 
     if (!pull_request) {
-      core.setFailed('Not a pull request')
+      core.warning('Not a pull request')
       return
     }
 

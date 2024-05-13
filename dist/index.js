@@ -31001,7 +31001,7 @@ async function check() {
         };
         const { pull_request } = github.context.payload;
         if (!pull_request) {
-            core.setFailed('Not a pull request');
+            core.warning('Not a pull request');
             return;
         }
         const details = {
